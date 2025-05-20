@@ -173,7 +173,7 @@ class CorrelationBasedFeatureSelector(
 
         Args:
             search_heuristic:
-                the heuristic to use. Not so many are implemented. 
+                the heuristic to use. Not so many are implemented.
             correlation_measure:
                 a string indicating which quality measure to use. See also page 70-72 in [1] or
                 the screen shots and usage examples in [3]

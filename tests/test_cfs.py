@@ -1,10 +1,7 @@
 import logging
-import pathlib
 import unittest
 
 import numpy as np
-import pandas as pd
-import scipy.io.arff
 import scipy.special
 import sklearn.model_selection
 import sklearn.svm
@@ -26,8 +23,10 @@ class TestStuff(unittest.TestCase):
         # https://www.openml.org/search?type=data&sort=runs&id=1485
         from sklearn.datasets import fetch_openml
 
-        df = fetch_openml(name="madelon", version=1, as_frame=True, parser="pandas").frame
-        
+        df = fetch_openml(
+            name="madelon", version=1, as_frame=True, parser="pandas"
+        ).frame
+
         label = "Class"
         features = [name for name in df.columns if name != label]
         df[label] = df[label].astype("int") - 1
@@ -92,15 +91,13 @@ class TestStuff(unittest.TestCase):
             return trans.get_feature_names_out(), np.mean(scores)
 
     def test_madelon_0(self):
-        """Make sure I've got the reference number correct, i.e. no variable selection.
-        """
+        """Make sure I've got the reference number correct, i.e. no variable selection."""
         variables, score = self.madelon(None, None)
         self.assertEqual(score, 0.5)
         np.testing.assert_array_equal(variables, self.X_madelon.columns.to_numpy())
 
     def test_madelon_1(self):
-        """See that accuracy improves
-        """
+        """See that accuracy improves"""
         variables, score = self.madelon("Pearson", "StepwiseForwards")
         self.assertEqual(score, 0.665)
         self.assertEqual(len(variables), 48)
