@@ -8,7 +8,7 @@ Inspirations:
 
 # Quickstart
 
-Install with `pip install git+https://...`
+Install with `pip install git+https://github.com/el-hult/correlation_based_feature_selection`
 It uses my numba implementation of minimum description length (MDL) computation, since the other libraries I had found were too slow for larger datasets. See the dependency list in `pyproject.toml`.
 
 ```python
