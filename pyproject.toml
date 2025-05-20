@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "entropymdlp",
+    "pandas>=2.2.3",
+    "scikit-learn>=1.6.1",
 ]
 
 [build-system]
