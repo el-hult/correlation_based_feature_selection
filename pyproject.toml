@@ -1,0 +1,21 @@
+[project]
+name = "correlation-based-feature-selection"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "entropymdlp",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+dev-dependencies = [
+    "pytest>=8.3.5",
+]
+
+[tool.uv.sources]
+entropymdlp = { git = "https://github.com/el-hult/entropy-mdlp" }
