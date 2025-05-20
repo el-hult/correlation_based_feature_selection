@@ -1,7 +1,6 @@
 import array
 import bisect
 import copy
-import ctypes
 import logging
 import typing
 
@@ -16,11 +15,8 @@ import sklearn.base
 import sklearn.feature_selection
 
 from .prioqueue import PrioQueue
-from .information_measures import sample_entropy, sample_mutual_information_numba
+from .information_measures import sample_entropy, sample_mutual_information
 
-unsigned_long_maxsize = 2 ** (8 * ctypes.sizeof(ctypes.c_long))
-unsigned_long_typecode = "L"
-VERBOSE = 5
 JOBLIB_VERBOSE_LEVEL = 0
 
 logger = logging.getLogger(__name__)
@@ -102,7 +98,7 @@ def discretize_each_column(X, y):
 
 def uncertanity_coefficient(z_j, z_k, entropy_j, entropy_k):
     # gain = sklearn.metrics.mutual_info_score(z_j, z_k)
-    gain = sample_mutual_information_numba(z_j, z_k)
+    gain = sample_mutual_information(z_j, z_k)
     return 2 * gain / (entropy_j + entropy_k)
 
 
@@ -169,7 +165,7 @@ def pearson_corr(X, y):
     return ff_corr, cf_corr
 
 
-class CorrelationFeatureSelector(
+class CorrelationBasedFeatureSelector(
     sklearn.feature_selection.SelectorMixin, sklearn.base.BaseEstimator
 ):
     def __init__(self, search_heuristic="BestFirstForwards", correlation_measure="UC"):
@@ -409,8 +405,7 @@ def bfs_backward(cf_corr, ff_corr, max_backtrack):
         if neg_merit < record_neg_merit:
             record_state = copy.copy(state)
             record_neg_merit = copy.copy(neg_merit)
-            logger.log(
-                VERBOSE,
+            logger.debug(
                 f"New record of merit {-neg_merit} using {len(record_state)} variables",
             )
 

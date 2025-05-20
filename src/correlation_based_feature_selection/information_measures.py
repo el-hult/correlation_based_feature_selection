@@ -9,7 +9,7 @@ def sample_entropy(z):
     return scipy.stats.entropy(p_x)
 
 @numba.njit(cache=True,nogil=True)
-def sample_mutual_information_numba(x, y):
+def sample_mutual_information(x, y):
     """Compute mutual information, aka 'information gain' between two integer valued random samples
 
     Assume input is integer numpy arrays

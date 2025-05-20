@@ -16,6 +16,8 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "entropymdlp" },
+    { name = "joblib" },
+    { name = "numpy" },
     { name = "pandas" },
     { name = "scikit-learn" },
 ]
@@ -28,6 +30,8 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "entropymdlp", git = "https://github.com/el-hult/entropy-mdlp" },
+    { name = "joblib", specifier = ">=1.5.0" },
+    { name = "numpy", specifier = ">=2.2.6" },
     { name = "pandas", specifier = ">=2.2.3" },
     { name = "scikit-learn", specifier = ">=1.6.1" },
 ]
