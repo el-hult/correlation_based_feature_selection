@@ -168,7 +168,7 @@ def pearson_corr(X, y):
 class CorrelationBasedFeatureSelector(
     sklearn.feature_selection.SelectorMixin, sklearn.base.BaseEstimator
 ):
-    def __init__(self, search_heuristic="BestFirstForwards", correlation_measure="UC"):
+    def __init__(self, heuristic="BestFirstForwards", correlation_measure="UC"):
         """Correlation based Feature Selection algorithm
 
         Args:
@@ -189,17 +189,18 @@ class CorrelationBasedFeatureSelector(
             [3] https://machinelearningmastery.com/perform-feature-selection-machine-learning-data-weka/
             [4] https://git.cms.waikato.ac.nz/weka/weka/-/blob/main/trunk/weka/src/main/java/weka/attributeSelection/CfsSubsetEval.java
         """
+        self.heuristic = heuristic
         heuristics = {
             "BestFirstForwards": (5, "forward"),
             "BestFirstBackwards": (5, "backward"),
             "StepwiseForwards": (0, "forward"),
             "StepwiseBackwards": (0, "backward"),
         }
-        if search_heuristic not in heuristics:
+        if heuristic not in heuristics:
             raise ValueError(
-                f"'{search_heuristic} is not a valid heuristic. Choices are {list(heuristics.keys())}"
+                f"'{heuristic} is not a valid heuristic. Choices are {list(heuristics.keys())}"
             )
-        self.max_backtrack, self.search_heuristic = heuristics[search_heuristic]
+        self.max_backtrack, self.search_direction = heuristics[heuristic]
 
         assert correlation_measure in ["UC", "Pearson"], (
             "Only some attribute quality measures is implemented. See page 71 in the thesis"
@@ -275,7 +276,7 @@ class CorrelationBasedFeatureSelector(
         # Perform the search
         #
         best_columns = best_first(
-            self.search_heuristic, cf_corr, ff_corr, self.max_backtrack
+            self.search_direction, cf_corr, ff_corr, self.max_backtrack
         )
 
         #

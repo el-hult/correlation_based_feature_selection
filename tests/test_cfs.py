@@ -78,7 +78,7 @@ class TestStuff(unittest.TestCase):
             return X.columns.to_numpy(), np.mean(scores)
         else:
             trans = CorrelationBasedFeatureSelector(
-                search_heuristic=search_heuristic,
+                heuristic=search_heuristic,
                 correlation_measure=correlation_measure,
             )
 

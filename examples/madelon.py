@@ -20,10 +20,21 @@ scores = sklearn.model_selection.cross_val_score(svc, X, y, cv=10)
 print(np.mean(scores))  # 0.5
 
 # Get improvement by using only selected features
-# the API uses a sklearn.feature_selection.SelectorMixin
-# so it should work well in pipelines etc
 X = CorrelationBasedFeatureSelector().fit_transform(df[features], df[label])
 y = df[label]
 svc = sklearn.svm.SVC(kernel="rbf", C=100, gamma=0.01, random_state=42)
 scores = sklearn.model_selection.cross_val_score(svc, X, y, cv=10)
 print(np.mean(scores))  # 0.6684... > 0.5 Improvement!
+
+
+# There is some information leakage going on here. Fix that by using a pipeline.
+from sklearn.pipeline import make_pipeline
+
+X = df[features]
+y = df[label]
+pipeline = make_pipeline(
+    CorrelationBasedFeatureSelector(),
+    sklearn.svm.SVC(kernel="rbf", C=100, gamma=0.01, random_state=42),
+)
+scores = sklearn.model_selection.cross_val_score(pipeline, X, y, cv=10)
+print(np.mean(scores))  # 0.6253... < 0.66 so there was some leakage goin on!
